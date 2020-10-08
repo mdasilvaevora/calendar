@@ -1,14 +1,11 @@
 import moment from 'moment';
 import uuid from 'react-uuid';
 
-const getFirstDayOfMonth = () => {
-    return moment().startOf('month').format('d');
-}
 const initialStartWeek = moment().startOf('month').add(0,'month').week();
 const initialEndWeek = moment().endOf('month').add(0,'month').week();
 
 const initMonth = (initialStartWeek,initialEndWeek) => {
-    const name = moment().startOf('month').format('MMMM')
+    const name = moment().startOf('month').format('MMMM');
     const weeks = Array(initialEndWeek-initialStartWeek)
                     .fill({id: 0})
                     .map((week, index) => {
@@ -37,7 +34,7 @@ const initMonth = (initialStartWeek,initialEndWeek) => {
 }
 
 const initialState = {
-    firstDayOfMonth: getFirstDayOfMonth(),
+    weekDays: moment.weekdays(),
     currentMonth: initMonth(initialStartWeek,initialEndWeek)
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Calendar from './components/calendar/Calendar';
+import CalendarContainer from './components/calendar/CalendarContainer';
 import { Provider } from 'react-redux';
 import store from './_redux/store'
 
@@ -7,7 +7,7 @@ function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        <Calendar/>
+        <CalendarContainer/>
       </div>
     </Provider>
   );
