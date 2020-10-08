@@ -6,7 +6,7 @@ const initialEndWeek = moment().endOf('month').add(0,'month').week();
 
 const initMonth = (initialStartWeek,initialEndWeek) => {
     const name = moment().startOf('month').format('MMMM');
-    const weeks = Array(initialEndWeek-initialStartWeek)
+    const weeks = Array((initialEndWeek-initialStartWeek)+1)
                     .fill({id: 0})
                     .map((week, index) => {
                         const weekIndex = index + initialStartWeek;
