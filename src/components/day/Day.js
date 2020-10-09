@@ -22,9 +22,6 @@ const useStyles = makeStyles(theme => ({
             }
         }
     },
-    day:{
-
-    },
     today:{
         color: 'green'
     },
@@ -41,14 +38,12 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'flex-end'
     },
-    addIcon: {
-
-    }
+    addIcon: {}
 }))
 
 const getDayClass = (day, classes) => {
     const today = moment();
-    const dayClasses = [classes.day]
+    const dayClasses = []
     if(day.date.month() !== today.month()) dayClasses.push(classes.outbound)
     if(today.isSame(day.date,'d')) dayClasses.push(classes.today);
     if(day.date.day() === 0 || day.date.day() === 6) dayClasses.push(classes.weekend);
@@ -56,7 +51,7 @@ const getDayClass = (day, classes) => {
     return dayClasses.join(' ');
 }
 
-export default function Day({day}) {
+export default function Day({day, addReminder}) {
     const classes = useStyles();
 
     return (
@@ -65,7 +60,12 @@ export default function Day({day}) {
             {day.date.format('D')}
         </div>
         <div className={classes.action}>
-            <Fab className={classes.addIcon} color="primary" size="small"><AddIcon/></Fab>
+            <Fab className={classes.addIcon}
+                 onClick={addReminder} 
+                 color="primary" 
+                 size="small">
+                <AddIcon/>
+            </Fab>
         </div>
     </div>
     )

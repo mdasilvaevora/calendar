@@ -10,13 +10,15 @@ const initMonth = (initialStartWeek,initialEndWeek) => {
                     .fill({id: 0})
                     .map((week, index) => {
                         const weekIndex = index + initialStartWeek;
+                        const weekId = uuid();
                         return {
-                            id: uuid(),
+                            id: weekId,
                             weekIndex: weekIndex,
                             days: Array(7).fill({id:0})
                                         .map((day,index) => {
                                             return {
                                                 id: uuid(),
+                                                weekId,
                                                 date: moment()
                                                             .week(weekIndex)
                                                             .startOf('week')
@@ -41,6 +43,9 @@ const initialState = {
 
 export default function(state = initialState, action) {
     switch(action.type){
+        case 'ADD_REMINDER': {
+            const {reminder,date} = action.payload;
+        }
         default:
             return state;
     }

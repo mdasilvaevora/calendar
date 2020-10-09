@@ -10,6 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Typography } from '@material-ui/core';
 import Day from '../day/Day';
+import DayContainer from '../day/DayContainer';
 
 const useStyles = makeStyles(theme => ({
     header: {
@@ -38,7 +39,7 @@ export default function CalendarMonth({month, weekDays}) {
                                 <TableRow key={index}>
                                     {week.days.map((day,index) => (
                                         <TableCell key={index}>
-                                            <Day day={day}/>
+                                            <DayContainer day={day}/>
                                         </TableCell>
                                     ))}
                                 </TableRow>
