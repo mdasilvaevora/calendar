@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 
+import ReminderItem from '../reminder/ReminderItem';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -51,13 +52,18 @@ const getDayClass = (day, classes) => {
     return dayClasses.join(' ');
 }
 
-export default function Day({day, addReminder}) {
+export default function Day({day, addReminder, editReminder}) {
     const classes = useStyles();
 
     return (
     <div className={classes.root}>
         <div className={getDayClass(day,classes)}>
             {day.date.format('D')}
+        </div>
+        <div>
+            {day.reminders.map(reminder => (
+                <ReminderItem reminder={reminder} editReminder={editReminder}/>
+            ))}
         </div>
         <div className={classes.action}>
             <Fab className={classes.addIcon}

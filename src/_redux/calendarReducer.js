@@ -43,8 +43,45 @@ const initialState = {
 
 export default function(state = initialState, action) {
     switch(action.type){
-        case 'ADD_REMINDER': {
+        case 'POST_REMINDER': {
             const {reminder,date} = action.payload;
+
+            const reminderToEdit = reminder.id? reminder : {
+                ...reminder,
+                id: uuid()
+            }
+            
+            const updatedWeeks = state.currentMonth.weeks.map(week => {
+                if(week.id === date.weekId) {
+                    const updatedDays = week.days.map(day => {
+                        if(day.id === date.id) {
+                            const updatedReminders = day.reminders.filter(reminder => reminder.id !== reminderToEdit.id );
+                            updatedReminders.push(reminderToEdit)
+                            return {
+                                ...day,
+                                reminders: updatedReminders
+                            }
+                        }
+                        else return day;
+                    })
+                    const updatedWeek = {
+                        ...week,
+                        days: updatedDays
+                    }
+                    return updatedWeek
+                }
+                else return week
+            })
+
+            const updatedMonth = {
+                ...state.currentMonth,
+                weeks: updatedWeeks
+            }
+
+            return {
+                ...state,
+                currentMonth: updatedMonth
+            }
         }
         default:
             return state;

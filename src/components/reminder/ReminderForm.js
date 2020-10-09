@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/styles';
 import Form from 'react-bootstrap/Form';
 import Paper from '@material-ui/core/Paper';
 import { CirclePicker } from 'react-color';
+import { Button } from 'react-bootstrap';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -13,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 
 const days = moment.weekdaysShort();
 
-export default function ReminderForm({reminder}) {
+export default function ReminderForm({reminder, updateReminder}) {
     const classes = useStyles();
     const [updatedReminder, setUpdatedReminder] = React.useState(reminder)
     
@@ -52,6 +53,10 @@ export default function ReminderForm({reminder}) {
             ...updatedReminder,
             city: evt.target.value
         })
+    }
+
+    const handleSubmit = evt => {
+        updateReminder(updatedReminder)
     }
     return (
         <div className={classes.root}>
@@ -104,6 +109,9 @@ export default function ReminderForm({reminder}) {
                                 onChangeComplete={handleColorChange}/>
                         </Form.Group>
                     </Form.Row>
+                    <Button variant="primary" onClick={handleSubmit}>
+                        Aceptar
+                    </Button>
                 </Form>
             </Paper>
         </div>
