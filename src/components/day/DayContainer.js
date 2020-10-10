@@ -27,7 +27,7 @@ export default function DayContainer({day}) {
             open={reminderForm}
             onClose={handleCloseReminder}
             style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                <ReminderContainer reminder={reminder} date={day} />
+                <ReminderContainer reminder={reminder} day={day} />
         </Modal>
         </>
     )

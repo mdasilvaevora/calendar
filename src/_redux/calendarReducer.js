@@ -1,9 +1,6 @@
 import moment from 'moment';
 import uuid from 'react-uuid';
 
-const initialStartWeek = moment().startOf('month').add(0,'month').week();
-const initialEndWeek = moment().endOf('month').add(0,'month').week();
-
 const initMonth = (initialStartWeek,initialEndWeek) => {
     const name = moment().startOf('month').format('MMMM');
     const weeks = Array((initialEndWeek-initialStartWeek)+1)
@@ -35,49 +32,73 @@ const initMonth = (initialStartWeek,initialEndWeek) => {
     }
 }
 
+const initialStartWeek = moment().startOf('month').add(0,'month').week();
+const initialEndWeek = moment().endOf('month').add(0,'month').week();
+const currentMonth = initMonth(initialStartWeek,initialEndWeek);
+
 const initialState = {
     weekDays: moment.weekdays(),
-    currentMonth: initMonth(initialStartWeek,initialEndWeek)
+    currentMonth,
+    year: [currentMonth]
 }
 
+const addReminder = (remindersList,newReminder) => {
+    const updatedReminderList = remindersList.filter(reminder => reminder.id !== newReminder.id);
+    updatedReminderList.push(newReminder);
+    return updatedReminderList;
+}
+const removeReminder = (remindersList,deletedReminder) => {
+    return remindersList.filter(reminder => reminder.id !== deletedReminder.id )
+}
+
+const updateReminderInMonth = (action, reminder, day, year) => {
+    const reminderToUpdate = reminder.id? reminder : {
+        ...reminder,
+        id: uuid()
+    }
+    const monthToUpdate = year.find(month => month.name === day.date.format('MMMM'));
+
+    const updatedWeeks = monthToUpdate.weeks.map(week => {
+        if(week.id === day.weekId) {
+            const updatedDays = week.days.map(weekDay => {
+                if(day.id === weekDay.id) {
+                    return {
+                        ...weekDay,
+                        reminders: action(weekDay.reminders,reminderToUpdate)
+                    }
+                }
+                else return weekDay;
+            })
+            const updatedWeek = {
+                ...week,
+                days: updatedDays
+            }
+            return updatedWeek
+        }
+        else return week
+    })
+
+    const updatedMonth = {
+        ...monthToUpdate,
+        weeks: updatedWeeks
+    }
+
+    return updatedMonth;
+}
 
 export default function(state = initialState, action) {
     switch(action.type){
         case 'POST_REMINDER': {
-            const {reminder,date} = action.payload;
-
-            const reminderToEdit = reminder.id? reminder : {
-                ...reminder,
-                id: uuid()
+            const {reminder,day} = action.payload;
+            const updatedMonth = updateReminderInMonth(addReminder,reminder, day, state.year);
+            return {
+                ...state,
+                currentMonth: updatedMonth
             }
-            
-            const updatedWeeks = state.currentMonth.weeks.map(week => {
-                if(week.id === date.weekId) {
-                    const updatedDays = week.days.map(day => {
-                        if(day.id === date.id) {
-                            const updatedReminders = day.reminders.filter(reminder => reminder.id !== reminderToEdit.id );
-                            updatedReminders.push(reminderToEdit)
-                            return {
-                                ...day,
-                                reminders: updatedReminders
-                            }
-                        }
-                        else return day;
-                    })
-                    const updatedWeek = {
-                        ...week,
-                        days: updatedDays
-                    }
-                    return updatedWeek
-                }
-                else return week
-            })
-
-            const updatedMonth = {
-                ...state.currentMonth,
-                weeks: updatedWeeks
-            }
-
+        }
+        case 'DELETE_REMINDER' : {
+            const {reminder, day} = action.payload;
+            const updatedMonth = updateReminderInMonth(removeReminder,reminder,day,state.year);
             return {
                 ...state,
                 currentMonth: updatedMonth

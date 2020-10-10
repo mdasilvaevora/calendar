@@ -1,6 +1,6 @@
 import * as types from './types';
 
-export const postReminder = ({reminder,date}) => ({
+export const postReminder = ({reminder,day}) => ({
     type: types.POST_REMINDER,
-    payload: {reminder, date}
+    payload: {reminder, day}
 })
