@@ -14,9 +14,10 @@ const useStyles = makeStyles(theme => ({
 
 const days = moment.weekdaysShort();
 
-export default function ReminderForm({reminder, updateReminder}) {
+export default function ReminderForm({reminder, updateReminder, removeReminder}) {
     const classes = useStyles();
-    const [updatedReminder, setUpdatedReminder] = React.useState(reminder)
+    const [updatedReminder, setUpdatedReminder] = React.useState(reminder);
+    const isNewReminder = reminder.id === undefined;
     
     const handleStartTimeChange = evt => {
         const updatedTime = evt.target.value;
@@ -57,6 +58,10 @@ export default function ReminderForm({reminder, updateReminder}) {
 
     const handleSubmit = evt => {
         updateReminder(updatedReminder)
+    }
+
+    const handleDelete = evt => {
+        removeReminder(updatedReminder)
     }
     return (
         <div className={classes.root}>
@@ -109,9 +114,16 @@ export default function ReminderForm({reminder, updateReminder}) {
                                 onChangeComplete={handleColorChange}/>
                         </Form.Group>
                     </Form.Row>
-                    <Button variant="primary" onClick={handleSubmit}>
-                        Aceptar
-                    </Button>
+                    <Form.Row>
+                        <Button variant="primary" onClick={handleSubmit}>
+                            {isNewReminder? 'Crear' : 'Actualizar'}
+                        </Button>
+                        {!isNewReminder &&
+                            <Button variant="primary" onClick={handleDelete}>
+                                Eliminar
+                            </Button>
+                        }
+                    </Form.Row>
                 </Form>
             </Paper>
         </div>

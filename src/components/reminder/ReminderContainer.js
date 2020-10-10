@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import ReminderForm from './ReminderForm';
-import { postReminder } from '../../_redux/calendarActions';
+import { postReminder, deleteReminder } from '../../_redux/calendarActions';
 
 const newReminder = {
     startTime: `${moment().format('HH')}:${moment().minutes()}`,
@@ -17,10 +17,14 @@ export default function ReminderContainer({reminder, day}) {
     const updateReminder = (reminder) => {
         dispatch(postReminder({reminder, day}))
     }
+    const removeReminder = (reminder) => {
+        dispatch(deleteReminder({reminder,day}))
+    }
     return (
         <ReminderForm 
             reminder={reminder? reminder : newReminder}
             updateReminder={updateReminder}
+            removeReminder={removeReminder}
         />
     )
 }
