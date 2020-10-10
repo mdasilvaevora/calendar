@@ -3,12 +3,25 @@ import moment from 'moment';
 import { makeStyles } from '@material-ui/styles';
 import Form from 'react-bootstrap/Form';
 import Paper from '@material-ui/core/Paper';
-import { CirclePicker } from 'react-color';
-import { Button } from 'react-bootstrap';
+import {CirclePicker} from 'react-color';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex'
+    },
+    colorDisplay: {
+        width: '100%',
+        height: '20px',
+        borderRadius: '5px',
+        marginBottom: '8px'
+    },
+    colorPicker: {
+        marginRight: '0 !important',
+        marginBottom: '0 !important',
+        width: '400px !important',
+        justifyContent: 'center'
     }
 }))
 
@@ -66,10 +79,13 @@ export default function ReminderForm({reminder, updateReminder, removeReminder})
     return (
         <div className={classes.root}>
             <Paper style={{padding: '20px'}}>
-                <div style={{backgroundColor: updatedReminder.color, width: '100%', height: '10px'}}></div>
+                <div 
+                    className={classes.colorDisplay}
+                    style={{backgroundColor: updatedReminder.color}}
+                />
                 <Form>
                     <Form.Row>
-                        <Form.Group>
+                        <Form.Group style={{width: '100%'}}>
                             <Form.Label>Description</Form.Label>
                             <Form.Control 
                                 type="text" 
@@ -92,9 +108,13 @@ export default function ReminderForm({reminder, updateReminder, removeReminder})
                             </Form.Control>
                         </Form.Group>
 
-                        <Form.Group>
+                        <Form.Group style={{display:'flex', flexDirection:'column'}}>
                             <Form.Label>Time</Form.Label>
-                            <input type="time" value={updatedReminder.startTime} onChange={handleStartTimeChange}/>
+                            <input 
+                                style={{height: '100%'}}
+                                type="time" 
+                                value={updatedReminder.startTime} 
+                                onChange={handleStartTimeChange}/>
                         </Form.Group>
 
                         <Form.Group>
@@ -107,19 +127,29 @@ export default function ReminderForm({reminder, updateReminder, removeReminder})
                     </Form.Row>
 
                     <Form.Row>
-                        <Form.Group>
+                        <Form.Group style={{width: '100%'}}>
                         <Form.Label>Color</Form.Label>
                             <CirclePicker 
+                                className={classes.colorPicker}
                                 color={reminder.color}
                                 onChangeComplete={handleColorChange}/>
                         </Form.Group>
                     </Form.Row>
                     <Form.Row>
-                        <Button variant="primary" onClick={handleSubmit}>
+                        <Button 
+                            variant="primary" 
+                            onClick={handleSubmit}
+                            style={{
+                                backgroundColor: updatedReminder.color,
+                                borderColor: updatedReminder.color,
+                                marginRight: '8px'}}>
                             {isNewReminder? 'Crear' : 'Actualizar'}
                         </Button>
                         {!isNewReminder &&
-                            <Button variant="primary" onClick={handleDelete}>
+                            <Button 
+                                variant="primary" 
+                                onClick={handleDelete}
+                                style={{backgroundColor: updatedReminder.color, borderColor: updatedReminder.color}}>
                                 Eliminar
                             </Button>
                         }

@@ -9,7 +9,7 @@ export default function DayContainer({day}) {
     const handleOpenReminder = evt => {
         setReminderForm(true)
     }
-    const handleCloseReminder = evt => {
+    const handleCloseReminder = () => {
         setReminderForm(false)
     }
 
@@ -27,7 +27,10 @@ export default function DayContainer({day}) {
             open={reminderForm}
             onClose={handleCloseReminder}
             style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                <ReminderContainer reminder={reminder} day={day} />
+                <ReminderContainer 
+                    handleCloseReminder={handleCloseReminder}
+                    reminder={reminder}
+                    day={day} />
         </Modal>
         </>
     )

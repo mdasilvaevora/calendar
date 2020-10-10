@@ -12,13 +12,15 @@ const newReminder = {
     day: moment().format('ddd')
 }
 
-export default function ReminderContainer({reminder, day}) {
+export default function ReminderContainer({reminder, handleCloseReminder, day}) {
     const dispatch = useDispatch();
     const updateReminder = (reminder) => {
         dispatch(postReminder({reminder, day}))
+        handleCloseReminder()
     }
     const removeReminder = (reminder) => {
         dispatch(deleteReminder({reminder,day}))
+        handleCloseReminder()
     }
     return (
         <ReminderForm 
