@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import Chip from '@material-ui/core/Chip';
 
-export default function ReminderItem({reminder, editReminder}) {
+export default function ReminderItem({reminder, editReminder, removeReminder}) {
     return (
-        <div onClick={e => editReminder(reminder)}>
-            <span>{reminder.text}</span>
-        </div>
+            <Chip 
+                label={reminder.text} 
+                onClick={e=>editReminder(reminder)}
+                onDelete={e=>removeReminder(reminder)}
+                style={{backgroundColor: reminder.color, marginBottom: '5px'}}/>
     )
 }

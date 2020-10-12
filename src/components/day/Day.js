@@ -5,15 +5,15 @@ import { makeStyles } from '@material-ui/styles';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 
-import ReminderItem from '../reminder/ReminderItem';
+import ReminderList from '../reminder/ReminderList';
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        width: '100px',
-        height: '100px',
+        width: '125px',
+        height: '125px',
         '& $addIcon': {
             display:"none"
         },
@@ -52,7 +52,7 @@ const getDayClass = (day, classes) => {
     return dayClasses.join(' ');
 }
 
-export default function Day({day, addReminder, editReminder}) {
+export default function Day({day, addReminder, editReminder, removeReminder}) {
     const classes = useStyles();
 
     return (
@@ -60,11 +60,11 @@ export default function Day({day, addReminder, editReminder}) {
         <div className={getDayClass(day,classes)}>
             {day.date.format('D')}
         </div>
-        <div>
-            {day.reminders.map(reminder => (
-                <ReminderItem reminder={reminder} editReminder={editReminder}/>
-            ))}
-        </div>
+        <ReminderList 
+            reminders={day.reminders}
+            editReminder={editReminder}
+            removeReminder={removeReminder}
+        /> 
         <div className={classes.action}>
             <Fab className={classes.addIcon}
                  onClick={addReminder} 

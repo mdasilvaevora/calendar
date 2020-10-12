@@ -64,7 +64,7 @@ const updateReminderInMonth = (action, reminder, day, year) => {
                 if(day.id === weekDay.id) {
                     return {
                         ...weekDay,
-                        reminders: action(weekDay.reminders,reminderToUpdate)
+                        reminders: action(day.reminders,reminderToUpdate)
                     }
                 }
                 else return weekDay;
