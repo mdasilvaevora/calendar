@@ -2,11 +2,15 @@ import React from 'react';
 import moment from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { makeStyles } from '@material-ui/styles';
 import Form from 'react-bootstrap/Form';
-import Paper from '@material-ui/core/Paper';
-import {CirclePicker} from 'react-color';
 import Button from 'react-bootstrap/Button';
+
+import { makeStyles } from '@material-ui/styles';
+import Paper from '@material-ui/core/Paper';
+
+import {CirclePicker} from 'react-color';
+
+import ReminderWeather from './ReminderWeather';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -81,6 +85,7 @@ export default function ReminderForm({reminder, updateReminder}) {
                                     name="city"
                                     type="text" 
                                     value={values.city}
+                                    placeholder="Enter the city"
                                     onChange={handleChange}/>
                             </Form.Group>
                         </Form.Row>
@@ -106,6 +111,14 @@ export default function ReminderForm({reminder, updateReminder}) {
                                     onChangeComplete={color => setValues({...values,color: color.hex})}/>
                             </Form.Group>
                         </Form.Row>
+
+                        <Form.Row>
+                            <Form.Group>
+                                <Form.Label>Weather</Form.Label>
+                                <ReminderWeather location={values.city}/>
+                            </Form.Group>
+                        </Form.Row>
+
                         <Form.Row>
                             <Button 
                                 variant="primary" 
