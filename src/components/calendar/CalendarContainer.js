@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
-import Calendar from './Calendar';
+import Calendar from './CalendarMonth';
 
 export default function CalendarContainer() {
     const { calendar } = useSelector(
@@ -10,7 +10,7 @@ export default function CalendarContainer() {
 
     return (
         <>
-            <Calendar month={calendar.currentMonth} weekDays={calendar.weekDays}/>
+            <Calendar month={calendar.year[calendar.currentMonthIndex]}/>
         </>
     )
 }

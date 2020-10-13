@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 import { makeStyles } from '@material-ui/styles';
 import Table from '@material-ui/core/Table';
@@ -17,8 +18,9 @@ const useStyles = makeStyles(theme => ({
         textAlign: 'center'
     }
 }))
-export default function CalendarMonth({month, weekDays}) {
+export default function CalendarMonth({month}) {
     const classes = useStyles();
+    const weekDays = moment.weekdays();
     return (
         <div style={{display:'flex', justifyContent: 'center', marginTop: '32px'}}>
             <Paper style={{padding: '20px'}}>

@@ -2,7 +2,9 @@ import moment from 'moment';
 import uuid from 'react-uuid';
 
 const initMonth = (initialStartWeek,initialEndWeek) => {
-    const name = moment().startOf('month').format('MMMM');
+    const month = moment().startOf('month');
+    const name = month.format('MMMM');
+    const index = month.month()
     const weeks = Array((initialEndWeek-initialStartWeek)+1)
                     .fill({id: 0})
                     .map((week, index) => {
@@ -28,6 +30,7 @@ const initMonth = (initialStartWeek,initialEndWeek) => {
                     })
     return {
         name,
+        index,
         weeks
     }
 }
@@ -37,9 +40,8 @@ const initialEndWeek = moment().endOf('month').add(0,'month').week();
 const currentMonth = initMonth(initialStartWeek,initialEndWeek);
 
 const initialState = {
-    weekDays: moment.weekdays(),
-    currentMonth,
-    year: [currentMonth]
+    currentMonthIndex: currentMonth.index,
+    year: {[currentMonth.index]: currentMonth}
 }
 
 const addReminder = (remindersList,newReminder) => {
@@ -47,23 +49,23 @@ const addReminder = (remindersList,newReminder) => {
     updatedReminderList.push(newReminder);
     return updatedReminderList;
 }
+
 const removeReminder = (remindersList,deletedReminder) => {
     return remindersList.filter(reminder => reminder.id !== deletedReminder.id )
 }
 
-const updateReminderInMonth = (action, reminder, day, year) => {
+const updateReminderInMonth = (action, reminder, day, month) => {
     const reminderToUpdate = reminder.id? reminder : {
         ...reminder,
         id: uuid()
     }
-    const monthToUpdate = year.find(month => month.name === day.date.format('MMMM'));
 
-    const updatedWeeks = monthToUpdate.weeks.map(week => {
+    const updatedWeeks = month.weeks.map(week => {
         if(week.id === day.weekId) {
             const updatedDays = week.days.map(weekDay => {
                 if(day.id === weekDay.id) {
                     return {
-                        ...weekDay,
+                        ...day,
                         reminders: action(day.reminders,reminderToUpdate)
                     }
                 }
@@ -79,7 +81,7 @@ const updateReminderInMonth = (action, reminder, day, year) => {
     })
 
     const updatedMonth = {
-        ...monthToUpdate,
+        ...month,
         weeks: updatedWeeks
     }
 
@@ -90,18 +92,24 @@ export default function(state = initialState, action) {
     switch(action.type){
         case 'POST_REMINDER': {
             const {reminder,day} = action.payload;
-            const updatedMonth = updateReminderInMonth(addReminder,reminder, day, state.year);
+            const updatedMonth = updateReminderInMonth(addReminder,reminder, day, state.year[state.currentMonthIndex]);
             return {
                 ...state,
-                currentMonth: updatedMonth
+                year: {
+                    ...state.year,
+                    [updatedMonth.index]: updatedMonth
+                },
             }
         }
         case 'DELETE_REMINDER' : {
             const {reminder, day} = action.payload;
-            const updatedMonth = updateReminderInMonth(removeReminder,reminder,day,state.year);
+            const updatedMonth = updateReminderInMonth(removeReminder,reminder,day,state.year[state.currentMonthIndex]);
             return {
                 ...state,
-                currentMonth: updatedMonth
+                year: {
+                    ...state.year,
+                    [updatedMonth.index]: updatedMonth
+                },
             }
         }
         default:
