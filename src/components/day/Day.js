@@ -65,7 +65,6 @@ export default function Day({day, addReminder, editReminder, removeReminder}) {
     const classes = useStyles();
 
     const handleClick = evt => {
-        console.log(evt)
         if(isSameMonth(day.date,moment())) addReminder()
     }
     

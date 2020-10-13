@@ -10,8 +10,6 @@ import Paper from '@material-ui/core/Paper';
 
 import {CirclePicker} from 'react-color';
 
-import ReminderWeather from './ReminderWeather';
-
 const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex'
@@ -109,13 +107,6 @@ export default function ReminderForm({reminder, updateReminder}) {
                                     className={classes.colorPicker}
                                     color={values.color}
                                     onChangeComplete={color => setValues({...values,color: color.hex})}/>
-                            </Form.Group>
-                        </Form.Row>
-
-                        <Form.Row>
-                            <Form.Group>
-                                <Form.Label>Weather</Form.Label>
-                                <ReminderWeather location={values.city}/>
                             </Form.Group>
                         </Form.Row>
 
