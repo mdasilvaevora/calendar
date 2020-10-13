@@ -42,19 +42,31 @@ const useStyles = makeStyles(theme => ({
     addIcon: {}
 }))
 
+const isSameMonth = (d1,d2) => {
+    return d1.month() === d2.month()
+}
+
+const isSameDay = (d1,d2) => {
+    return d1.isSame(d2, 'd')
+}
+
+const isWeekend = (d1) => {
+    return d1.day() === 0 || d1.day() === 6
+}
+
 const getDayClass = (day, classes) => {
     const today = moment();
     const dayClasses = []
-    if(day.date.month() !== today.month()) dayClasses.push(classes.outbound)
-    if(today.isSame(day.date,'d')) dayClasses.push(classes.today);
-    if(day.date.day() === 0 || day.date.day() === 6) dayClasses.push(classes.weekend);
+    if(!isSameMonth(day.date, today)) dayClasses.push(classes.outbound)
+    if(isSameDay(day.date, today)) dayClasses.push(classes.today);
+    if(isWeekend(day.date)) dayClasses.push(classes.weekend);
     else dayClasses.push(classes.weekday);
     return dayClasses.join(' ');
 }
 
 export default function Day({day, addReminder, editReminder, removeReminder}) {
     const classes = useStyles();
-
+    
     return (
     <div className={classes.root}>
         <div className={getDayClass(day,classes)}>
@@ -65,14 +77,17 @@ export default function Day({day, addReminder, editReminder, removeReminder}) {
             editReminder={editReminder}
             removeReminder={removeReminder}
         /> 
-        <div className={classes.action}>
-            <Fab className={classes.addIcon}
-                 onClick={addReminder} 
-                 color="primary" 
-                 size="small">
-                <AddIcon/>
-            </Fab>
-        </div>
+
+        {isSameMonth(day.date, moment()) && 
+            <div className={classes.action}>
+                <Fab className={classes.addIcon}
+                    onClick={addReminder} 
+                    color="primary" 
+                    size="small">
+                    <AddIcon/>
+                </Fab>
+            </div>
+        }
     </div>
     )
 }

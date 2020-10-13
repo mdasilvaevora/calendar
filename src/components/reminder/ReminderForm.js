@@ -36,7 +36,6 @@ const days = moment.weekdaysShort();
 
 export default function ReminderForm({reminder, updateReminder}) {
     const classes = useStyles();
-    const [updatedReminder, setUpdatedReminder] = React.useState(reminder);
     const isNewReminder = reminder.id === undefined;
 
     const handleSubmit = values => {
@@ -45,18 +44,18 @@ export default function ReminderForm({reminder, updateReminder}) {
 
     return (
         <div className={classes.root}>
+            <Formik
+                validationSchema={ReminderFormSchema}
+                onSubmit={handleSubmit}
+                initialValues={reminder}
+            >
+            {({ values, errors, touched, handleSubmit, handleChange, setValues}) => (
             <Paper style={{padding: '20px'}}>
                 <div 
                     className={classes.colorDisplay}
-                    style={{backgroundColor: updatedReminder.color}}
+                    style={{backgroundColor: values.color}}
                 />
 
-                <Formik
-                    validationSchema={ReminderFormSchema}
-                    onSubmit={handleSubmit}
-                    initialValues={updatedReminder}
-                >
-                {({ values, errors, touched, handleSubmit, handleChange, setValues}) => (
                     <Form noValidate onSubmit={handleSubmit} >
                         <Form.Row>
                             <Form.Group style={{width: '100%'}}>
@@ -76,29 +75,18 @@ export default function ReminderForm({reminder, updateReminder}) {
                         </Form.Row>
 
                         <Form.Row>
-                            <Form.Group>
-                                <Form.Label>Day</Form.Label>
-                                <Form.Control 
-                                    name="day"
-                                    as="select"
-                                    value={values.day}
-                                    onChange={handleChange}>
-                                    {days.map((day,index) => (
-                                        <option key={index}>{day}</option>
-                                    ))}
-                                </Form.Control>
-                            </Form.Group>
-
                             <Form.Group style={{display:'flex', flexDirection:'column'}}>
                                 <Form.Label>Time</Form.Label>
                                 <input 
                                     name="startTime"
-                                    style={{height: '100%'}}
+                                    className='form-control'
                                     type="time" 
                                     value={values.startTime} 
                                     onChange={handleChange}/>
                             </Form.Group>
+                        </Form.Row>
 
+                        <Form.Row>
                             <Form.Group>
                                 <Form.Label>City</Form.Label>
                                 <Form.Control 
@@ -123,16 +111,16 @@ export default function ReminderForm({reminder, updateReminder}) {
                                 variant="primary" 
                                 type="submit"
                                 style={{
-                                    backgroundColor: updatedReminder.color,
-                                    borderColor: updatedReminder.color,
+                                    backgroundColor: values.color,
+                                    borderColor: values.color,
                                     marginRight: '8px'}}>
                                 {isNewReminder? 'Crear' : 'Actualizar'}
                             </Button>
                         </Form.Row>
                     </Form>
+                </Paper>
                 )}
-                </Formik>
-            </Paper>
+            </Formik>
         </div>
     )
 }
