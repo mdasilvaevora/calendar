@@ -11,17 +11,10 @@ const useStyles = makeStyles(theme => ({
     root: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         width: '125px',
         height: '125px',
-        '& $addIcon': {
-            display:"none"
-        },
-        '&:hover':{
-            '& $addIcon':{
-                display: 'inline-flex'
-            }
-        }
+        cursor: 'pointer'
     },
     today:{
         color: 'green'
@@ -70,9 +63,14 @@ const getDayClass = (day, classes) => {
 
 export default function Day({day, addReminder, editReminder, removeReminder}) {
     const classes = useStyles();
+
+    const handleClick = evt => {
+        console.log(evt)
+        if(isSameMonth(day.date,moment())) addReminder()
+    }
     
     return (
-    <div className={classes.root}>
+    <div className={classes.root} onClick={handleClick}>
         <div className={getDayClass(day,classes)}>
             {day.date.format('D')}
         </div>
@@ -80,18 +78,7 @@ export default function Day({day, addReminder, editReminder, removeReminder}) {
             reminders={day.reminders}
             editReminder={editReminder}
             removeReminder={removeReminder}
-        /> 
-
-        {isSameMonth(day.date, moment()) && 
-            <div className={classes.action}>
-                <Fab className={classes.addIcon}
-                    onClick={addReminder} 
-                    color="primary" 
-                    size="small">
-                    <AddIcon/>
-                </Fab>
-            </div>
-        }
+        />
     </div>
     )
 }
