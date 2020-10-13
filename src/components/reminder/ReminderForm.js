@@ -75,6 +75,17 @@ export default function ReminderForm({reminder, updateReminder}) {
                         </Form.Row>
 
                         <Form.Row>
+                            <Form.Group style={{width:'100%'}}>
+                                <Form.Label>City</Form.Label>
+                                <Form.Control 
+                                    name="city"
+                                    type="text" 
+                                    value={values.city}
+                                    onChange={handleChange}/>
+                            </Form.Group>
+                        </Form.Row>
+
+                        <Form.Row>
                             <Form.Group style={{display:'flex', flexDirection:'column'}}>
                                 <Form.Label>Time</Form.Label>
                                 <input 
@@ -87,23 +98,12 @@ export default function ReminderForm({reminder, updateReminder}) {
                         </Form.Row>
 
                         <Form.Row>
-                            <Form.Group>
-                                <Form.Label>City</Form.Label>
-                                <Form.Control 
-                                    name="city"
-                                    type="text" 
-                                    value={values.city}
-                                    onChange={handleChange}/>
-                            </Form.Group>
-                        </Form.Row>
-
-                        <Form.Row>
                             <Form.Group style={{width: '100%'}}>
                             <Form.Label>Color</Form.Label>
                                 <CirclePicker 
                                     className={classes.colorPicker}
                                     color={values.color}
-                                    onChangeComplete={color => setValues({color: color.hex})}/>
+                                    onChangeComplete={color => setValues({...values,color: color.hex})}/>
                             </Form.Group>
                         </Form.Row>
                         <Form.Row>

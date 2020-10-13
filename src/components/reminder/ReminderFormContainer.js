@@ -7,7 +7,7 @@ import { postReminder } from '../../_redux/calendarActions';
 const newReminder = {
     startTime: `${moment().format('HH')}:${moment().minutes()}`,
     text: '',
-    color: '#4D4D4D',
+    color: 'rgb(0, 188, 212)',
     city: '',
     day: moment().format('ddd')
 }

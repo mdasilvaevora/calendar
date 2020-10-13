@@ -9,16 +9,19 @@ export default function DayContainer({day}) {
     const dispatch = useDispatch();
     const [reminderForm, setReminderForm] = React.useState(false);
     const [reminder, setReminder] = React.useState()
-    const handleOpenReminder = evt => {
+    
+    const handleAddReminder = evt => {
+        setReminder(undefined)
         setReminderForm(true)
     }
+    
     const handleCloseReminder = () => {
         setReminderForm(false)
     }
 
     const handleEditReminder = reminder => {
         setReminder(reminder)
-        handleOpenReminder()
+        setReminderForm(true)
     }
 
     const handleRemoveReminder = reminder => {
@@ -28,7 +31,7 @@ export default function DayContainer({day}) {
         <>
         <Day 
             day={day} 
-            addReminder={handleOpenReminder}
+            addReminder={handleAddReminder}
             editReminder={handleEditReminder}
             removeReminder={handleRemoveReminder}/>
         <Modal 

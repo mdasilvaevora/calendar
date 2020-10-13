@@ -39,7 +39,11 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'flex-end'
     },
-    addIcon: {}
+    addIcon: {
+        '&:focus': {
+            outline: 'none'
+        }
+    }
 }))
 
 const isSameMonth = (d1,d2) => {
